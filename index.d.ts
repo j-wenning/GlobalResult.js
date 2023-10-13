@@ -18,33 +18,33 @@ export declare global {
   function Ok<T>(value: T): Ok<T>
 
   function Err<E>(error: E): Err<E>
-
-  function intoResult<E>(
-    isAsync: true,
-  ): <A extends any[], T>(
-    fallible: (...args: A) => Promise<T>,
-  ) => (...args: A) => Promise<Result<Awaited<T>, E>>
-
-  function intoResult<E>(
-    isAsync: false,
-  ): <A extends any[], T>(
-    fallible: (...args: A) => T,
-  ) => (...args: A) => Result<T, E>
-
-  function intoResult<E>(
-    isAsync: true,
-    thisArg: any,
-  ): <C extends typeof thisArg, A extends any[], T>(
-    fallible: ThisParameterType<C> & ((...args: A) => Promise<T>),
-  ) => (...args: A) => Promise<Result<Awaited<T>, E>>
-
-  function intoResult<E>(
-    isAsync: false,
-    thisArg: any,
-  ): <C extends typeof thisArg, A extends any[], T>(
-    fallible: ThisParameterType<C> & ((...args: A) => T),
-  ) => (...args: A) => Result<T, E>
 }
+
+export function intoResult<E>(
+  isAsync: true,
+): <A extends any[], T>(
+  fallible: (...args: A) => Promise<T>,
+) => (...args: A) => Promise<Result<Awaited<T>, E>>
+
+export function intoResult<E>(
+  isAsync: false,
+): <A extends any[], T>(
+  fallible: (...args: A) => T,
+) => (...args: A) => Result<T, E>
+
+export function intoResult<E>(
+  isAsync: true,
+  thisArg: any,
+): <C extends typeof thisArg, A extends any[], T>(
+  fallible: ThisParameterType<C> & ((...args: A) => Promise<T>),
+) => (...args: A) => Promise<Result<Awaited<T>, E>>
+
+export function intoResult<E>(
+  isAsync: false,
+  thisArg: any,
+): <C extends typeof thisArg, A extends any[], T>(
+  fallible: ThisParameterType<C> & ((...args: A) => T),
+) => (...args: A) => Result<T, E>
 
 export function init(): void
 

@@ -50,40 +50,41 @@ export function init() {
   globalThis.Err = function Err(value) {
     return Object.freeze(new ErrCls(value))
   }
+}
 
-  // @ts-expect-error cannot resolve return type
-  globalThis.intoResult = function intoResult(isAsync, thisArg) {
-    return (fallible) => {
-      if (isAsync) {
-        if (thisArg === undefined) {
-          return (...args) =>
-            /** @type {Promise<any>} */ (
-              // @ts-expect-error cannot resolve args for fallible
-              fallible(...args)
-            )
-              .then(globalThis.Ok)
-              .catch(globalThis.Err)
-        } else {
-          return (...args) =>
-            /** @type {Promise<any>} */ (
-              // @ts-expect-error - cannot resolve thisArg or args for fallible
-              fallible.apply(thisArg, args)
-            )
-              .then(globalThis.Ok)
-              .catch(globalThis.Err)
-        }
+/**
+ * @param {boolean} isAsync
+ * @param {any} [thisArg]
+ * @returns {(cb: (...args: any[]) => any) => (...args: any[]) => any}
+ */
+export function intoResult(isAsync, thisArg) {
+  return (fallible) => {
+    if (isAsync) {
+      if (thisArg === undefined) {
+
+        return (...args) =>
+            /** @type {Promise<any>} */(fallible(...args))
+            .then(globalThis.Ok)
+            .catch(globalThis.Err)
       } else {
-        if (thisArg === undefined) {
+        return (...args) =>
+            /** @type {Promise<any>} */(fallible.apply(thisArg, args))
+            .then(globalThis.Ok)
+            .catch(globalThis.Err)
+      }
+    } else {
+      if (thisArg === undefined) {
+        return (...args) => {
           try {
-            // @ts-expect-error - cannot resolve args for fallible
             const result = fallible(...args)
             return globalThis.Ok(result)
           } catch (e) {
             return globalThis.Err(e)
           }
-        } else {
+        }
+      } else {
+        return (...args) => {
           try {
-            // @ts-expect-error - cannot resolve thisArg or args for fallible
             const result = fallible.apply(thisArg, args)
             return globalThis.Ok(result)
           } catch (e) {
