@@ -61,14 +61,13 @@ export function intoResult(isAsync, thisArg) {
   return (fallible) => {
     if (isAsync) {
       if (thisArg === undefined) {
-
         return (...args) =>
-            /** @type {Promise<any>} */(fallible(...args))
+          /** @type {Promise<any>} */ (fallible(...args))
             .then(globalThis.Ok)
             .catch(globalThis.Err)
       } else {
         return (...args) =>
-            /** @type {Promise<any>} */(fallible.apply(thisArg, args))
+          /** @type {Promise<any>} */ (fallible.apply(thisArg, args))
             .then(globalThis.Ok)
             .catch(globalThis.Err)
       }

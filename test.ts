@@ -15,14 +15,13 @@ class Foo {
   }
 
   async doBoundErr() {
-    throw this.errReturn;
+    throw this.errReturn
   }
 }
 
 function doUnboundOk() {
   return OK
 }
-
 
 function doUnboundErr() {
   throw ERR
@@ -31,15 +30,19 @@ function doUnboundErr() {
 const foo = new Foo()
 
 const boundOk = await intoResult<number>(true, foo)(foo.doBoundOk)()
-if (!(boundOk.isOk && boundOk.ok === OK)) throw Error(`Error for Bound Ok: ${JSON.stringify(boundOk)}`);
+if (!(boundOk.isOk && boundOk.ok === OK))
+  throw Error(`Error for Bound Ok: ${JSON.stringify(boundOk)}`)
 
 const boundErr = await intoResult<number>(true, foo)(foo.doBoundErr)()
-if (!(!boundErr.isOk && boundErr.err === ERR)) throw Error(`Error for Bound Err: ${JSON.stringify(boundErr)}`);
+if (!(!boundErr.isOk && boundErr.err === ERR))
+  throw Error(`Error for Bound Err: ${JSON.stringify(boundErr)}`)
 
 const unboundOk = intoResult<number>(false)(doUnboundOk)()
-if (!(unboundOk.isOk && unboundOk.ok === OK)) throw Error(`Error for Unbound Ok: ${JSON.stringify(unboundOk)}`);
+if (!(unboundOk.isOk && unboundOk.ok === OK))
+  throw Error(`Error for Unbound Ok: ${JSON.stringify(unboundOk)}`)
 
 const unboundErr = intoResult<number>(false)(doUnboundErr)()
-if (!(!unboundErr.isOk && unboundErr.err === ERR)) throw Error(`Error for Unbound Err: ${JSON.stringify(unboundErr)}`);
+if (!(!unboundErr.isOk && unboundErr.err === ERR))
+  throw Error(`Error for Unbound Err: ${JSON.stringify(unboundErr)}`)
 
 console.log("All tests passed!")
