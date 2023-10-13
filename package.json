@@ -1,0 +1,15 @@
+{
+  "name": "@j-wenning/global-result",
+  "version": "0.0.1",
+  "description": "A simple utility for injecting a Result type into the global namespace",
+  "main": "index.js",
+  "author": "Justin Wenning <wenning.justin@gmail.com>",
+  "license": "Unlicense",
+  "type": "module",
+  "scripts": {
+    "format": "prettier . --write"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.3"
+  }
+}
