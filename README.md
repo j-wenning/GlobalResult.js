@@ -6,21 +6,17 @@ A simple utility for injecting a Result type into the global namespace
 
 ## API
 
-### `Ok(value)`
+### `Ok` (Global)
 
 Wraps a value in an `Ok` class to be handled when `isOk` is `true`.
 
-### `Err(value)`
+### `Err` (Global)
 
 Wraps a value in an `Err` class to be handled when `isOk` is `false`.
 
-### `intoResult()(fallible)`
+### `intoResult`
 
 Wraps a function that may throw in a `Result`.
-
-### `intoBoundResult()(thisArg, fallible)`
-
-Wraps a function that relies on a `this` context and may throw in a `Result`.
 
 ## Examples
 
