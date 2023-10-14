@@ -17,6 +17,10 @@ export function init() {
         return this.value
       }
 
+      get err() {
+        return undefined
+      }
+
       /** @param {T} value */
       constructor(value) {
         this.value = value
@@ -31,6 +35,10 @@ export function init() {
 
       get isOk() {
         return /** @type {const} */ (false)
+      }
+
+      get ok() {
+        return undefined
       }
 
       get err() {

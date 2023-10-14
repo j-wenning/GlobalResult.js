@@ -1,12 +1,12 @@
 type Ok<T> = {
   readonly isOk: true
-  readonly value: T
   readonly ok: T
+  readonly err: undefined
 }
 
 type Err<E> = {
   readonly isOk: false
-  readonly value: E
+  readonly ok: undefined
   readonly err: E
 }
 
