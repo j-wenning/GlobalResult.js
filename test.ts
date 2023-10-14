@@ -10,17 +10,33 @@ class Foo {
   okReturn = OK
   errReturn = ERR
 
-  async doBoundOk() {
+  async doAsyncBoundOk() {
     return this.okReturn
   }
 
-  async doBoundErr() {
+  doBoundOk() {
+    return this.okReturn
+  }
+
+  async doAsyncBoundErr() {
+    throw this.errReturn
+  }
+
+  doBoundErr() {
     throw this.errReturn
   }
 }
 
+async function doAsyncUnboundOk() {
+  return OK
+}
+
 function doUnboundOk() {
   return OK
+}
+
+async function doAsyncUnboundErr() {
+  throw ERR
 }
 
 function doUnboundErr() {
@@ -29,20 +45,60 @@ function doUnboundErr() {
 
 const foo = new Foo()
 
-const boundOk = await intoResult<number>(true, foo)(foo.doBoundOk)()
-if (!(boundOk.isOk && boundOk.ok === OK))
-  throw Error(`Error for Bound Ok: ${JSON.stringify(boundOk)}`)
+// // Async checks
 
-const boundErr = await intoResult<number>(true, foo)(foo.doBoundErr)()
-if (!(!boundErr.isOk && boundErr.err === ERR))
-  throw Error(`Error for Bound Err: ${JSON.stringify(boundErr)}`)
+// Bound
+const asyncBoundOk = await intoResult<number>(foo, true)(foo.doAsyncBoundOk)()
+if (!(asyncBoundOk.isOk && asyncBoundOk.ok === OK))
+  throw Error(`Error for Async Bound Ok: ${JSON.stringify(asyncBoundOk)}`)
 
-const unboundOk = intoResult<number>(false)(doUnboundOk)()
-if (!(unboundOk.isOk && unboundOk.ok === OK))
-  throw Error(`Error for Unbound Ok: ${JSON.stringify(unboundOk)}`)
+const asyncBoundErr = await intoResult<number>(foo, true)(foo.doAsyncBoundErr)()
+if (!(!asyncBoundErr.isOk && asyncBoundErr.err === ERR))
+  throw Error(`Error for Async Bound Err: ${JSON.stringify(asyncBoundErr)}`)
 
-const unboundErr = intoResult<number>(false)(doUnboundErr)()
-if (!(!unboundErr.isOk && unboundErr.err === ERR))
-  throw Error(`Error for Unbound Err: ${JSON.stringify(unboundErr)}`)
+// Unbound
+const asyncUnboundOk = await intoResult<number>(true)(doAsyncUnboundOk)()
+if (!(asyncUnboundOk.isOk && asyncUnboundOk.ok === OK))
+  throw Error(`Error for Unbound Ok: ${JSON.stringify(asyncUnboundOk)}`)
+
+const asyncUnboundErr = await intoResult<number>(true)(doAsyncUnboundErr)()
+if (!(!asyncUnboundErr.isOk && asyncUnboundErr.err === ERR))
+  throw Error(`Error for Unbound Err: ${JSON.stringify(asyncUnboundErr)}`)
+
+// // Sync checks
+
+// Bound
+const implicitBoundOk = intoResult<number>(foo)(foo.doBoundOk)()
+if (!(implicitBoundOk.isOk && implicitBoundOk.ok === OK))
+  throw Error(`Error for Bound Ok: ${JSON.stringify(implicitBoundOk)}`)
+
+const implicitBoundErr = intoResult<number>(foo)(foo.doBoundErr)()
+if (!(!implicitBoundErr.isOk && implicitBoundErr.err === ERR))
+  throw Error(`Error for Bound Err: ${JSON.stringify(implicitBoundErr)}`)
+
+const explicitBoundOk = intoResult<number>(foo, false)(foo.doBoundOk)()
+if (!(explicitBoundOk.isOk && explicitBoundOk.ok === OK))
+  throw Error(`Error for Bound Ok: ${JSON.stringify(explicitBoundOk)}`)
+
+const explicitBoundErr = intoResult<number>(foo, false)(foo.doBoundErr)()
+if (!(!explicitBoundErr.isOk && explicitBoundErr.err === ERR))
+  throw Error(`Error for Bound Err: ${JSON.stringify(explicitBoundErr)}`)
+
+// Unbound
+const implicitUnboundOk = intoResult<number>()(doUnboundOk)()
+if (!(implicitUnboundOk.isOk && implicitUnboundOk.ok === OK))
+  throw Error(`Error for Unbound Ok: ${JSON.stringify(implicitUnboundOk)}`)
+
+const implicitUnboundErr = intoResult<number>()(doUnboundErr)()
+if (!(!implicitUnboundErr.isOk && implicitUnboundErr.err === ERR))
+  throw Error(`Error for Unbound Err: ${JSON.stringify(implicitUnboundErr)}`)
+
+const explicitUnboundOk = intoResult<number>(false)(doUnboundOk)()
+if (!(explicitUnboundOk.isOk && explicitUnboundOk.ok === OK))
+  throw Error(`Error for Unbound Ok: ${JSON.stringify(explicitUnboundOk)}`)
+
+const explicitUnboundErr = intoResult<number>(false)(doUnboundErr)()
+if (!(!explicitUnboundErr.isOk && explicitUnboundErr.err === ERR))
+  throw Error(`Error for Unbound Err: ${JSON.stringify(explicitUnboundErr)}`)
 
 console.log("All tests passed!")

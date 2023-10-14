@@ -27,21 +27,21 @@ export function intoResult<E>(
 ) => (...args: A) => Promise<Result<Awaited<T>, E>>
 
 export function intoResult<E>(
-  isAsync: false,
+  isAsync?: false,
 ): <A extends any[], T>(
   fallible: (...args: A) => T,
 ) => (...args: A) => Result<T, E>
 
 export function intoResult<E>(
-  isAsync: true,
   thisArg: any,
+  isAsync: true,
 ): <C extends typeof thisArg, A extends any[], T>(
   fallible: ThisParameterType<C> & ((...args: A) => Promise<T>),
 ) => (...args: A) => Promise<Result<Awaited<T>, E>>
 
 export function intoResult<E>(
-  isAsync: false,
   thisArg: any,
+  isAsync?: false,
 ): <C extends typeof thisArg, A extends any[], T>(
   fallible: ThisParameterType<C> & ((...args: A) => T),
 ) => (...args: A) => Result<T, E>

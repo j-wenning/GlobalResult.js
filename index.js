@@ -53,11 +53,13 @@ export function init() {
 }
 
 /**
- * @param {boolean} isAsync
- * @param {any} [thisArg]
+ * @param {any} arg0
+ * @param {any} [arg1]
  * @returns {(cb: (...args: any[]) => any) => (...args: any[]) => any}
  */
-export function intoResult(isAsync, thisArg) {
+export function intoResult(arg0, arg1) {
+  const isAsync = typeof arg0 === "boolean" ? arg0 ?? false : arg1 ?? false
+  const thisArg = typeof arg0 !== "boolean" ? arg0 : undefined
   return (fallible) => {
     if (isAsync) {
       if (thisArg === undefined) {
