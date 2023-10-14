@@ -15,6 +15,8 @@ type Fn = (...args: any[]) => any
 export declare global {
   type Result<T, E> = Ok<T> | Err<E>
 
+  function Ok(): Ok<null>
+
   function Ok<T>(value: T): Ok<T>
 
   function Err<E>(error: E): Err<E>

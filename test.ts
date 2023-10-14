@@ -103,4 +103,9 @@ const explicitUnboundErr = intoResult<number>(false)(doUnboundErr)()
 if (!(!explicitUnboundErr.isOk && explicitUnboundErr.err === ERR))
   throw Error(`Error for Unbound Err: ${JSON.stringify(explicitUnboundErr)}`)
 
+// // Misc. Checks
+const emptyOk = Ok()
+if (emptyOk.ok !== null)
+  throw Error(`Error for Empty Ok: ${JSON.stringify(emptyOk)}`)
+
 console.log("All tests passed!")

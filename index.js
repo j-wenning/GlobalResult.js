@@ -51,7 +51,7 @@ export function init() {
       }
     })()
 
-  globalThis.Ok = function Ok(value) {
+  globalThis.Ok = function Ok(value = null) {
     return Object.freeze(new OkCls(value))
   }
 
