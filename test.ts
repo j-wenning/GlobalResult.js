@@ -1,3 +1,5 @@
+#!/usr/bin/env -S deno run
+
 import { init, intoResult } from "./index.js"
 
 init()
