@@ -41,8 +41,12 @@ export function init() {
       }
     })()
 
-  globalThis.Ok = function Ok(value = null) {
-    return Object.freeze(new OkCls(value))
+  /**
+   * @template T
+   * @param {[T] | []} values
+   */
+  globalThis.Ok = function Ok(...values) {
+    return Object.freeze(new OkCls(values.length === 0 ? null : values[0]))
   }
 
   globalThis.Err = function Err(value) {
