@@ -6,15 +6,8 @@ export function init() {
     /** @template T */
 
     class Ok {
-      /** @type {T} */
-      value
-
       get isOk() {
         return /** @type {const} */ (true)
-      }
-
-      get ok() {
-        return this.value
       }
 
       get err() {
@@ -23,16 +16,13 @@ export function init() {
 
       /** @param {T} value */
       constructor(value) {
-        this.value = value
+        this.ok = value
       }
     })()
 
   const ErrCls = (() =>
     /** @template E */
     class Err {
-      /** @type {E} */
-      value
-
       get isOk() {
         return /** @type {const} */ (false)
       }
@@ -41,13 +31,9 @@ export function init() {
         return undefined
       }
 
-      get err() {
-        return this.value
-      }
-
       /** @param {E} value */
       constructor(value) {
-        this.value = value
+        this.err = value
       }
     })()
 
