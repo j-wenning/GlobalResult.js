@@ -8,15 +8,15 @@ A simple utility for injecting a Result type into the global namespace
 
 ### `Ok` (Global)
 
-Wraps a value in an `Ok` class to be handled when `isOk` is `true`.
+Wraps a value in an `Ok` class.
 
 ### `Err` (Global)
 
-Wraps a value in an `Err` class to be handled when `isOk` is `false`.
+Wraps a value in an `Err` class.
 
 ### `intoResult`
 
-Wraps a function that may throw in a `Result`.
+Wraps a function that may throw with a `Result` (`Ok` or `Err` class).
 
 ## Examples
 
@@ -44,7 +44,7 @@ function risky(): Result<number, string> {
   return { foo: 88888 }
 }
 
-const valueWithDefault = risky().value?.foo ?? 11111
+const valueWithDefault = risky().ok?.foo ?? 11111
 ```
 
 ### Wrapping a function that can throw
