@@ -1,8 +1,6 @@
 # GlobalResult.js
 
-## Description
-
-A simple utility for injecting a Result type into the global namespace
+_A simple utility for injecting a Result type into the global namespace_
 
 ## API
 
@@ -13,10 +11,6 @@ Wraps a value in an `Ok` class.
 ### `Err` (Global)
 
 Wraps a value in an `Err` class.
-
-### `intoResult`
-
-Wraps a function that may throw with a `Result` (`Ok` or `Err` class).
 
 ## Examples
 
@@ -45,57 +39,4 @@ function risky(): Result<number, string> {
 }
 
 const valueWithDefault = risky().ok?.foo ?? 11111
-```
-
-### Wrapping a function that can throw
-
-```ts
-import { ExtError, unsafeFn } from "external-library"
-
-const wrappedFn = intoResult<ExtError>(false)(unsafeFn)
-
-const result = wrappedFn(123)
-
-if (result.isOk) {
-  handleResult(result.ok)
-} else {
-  handleError(result.err)
-}
-```
-
-### Wrapping an async function that can throw
-
-```ts
-import { ExtError, unsafeAsyncFn } from "external-library"
-
-const wrappedFn = intoResult<ExtError>(true)(unsafeAsyncFn)
-
-const result = await wrappedFn(123)
-
-if (result.isOk) {
-  handleResult(result.ok)
-} else {
-  handleError(result.err)
-}
-```
-
-### Wrapping function that relies on a `this` context and can throw
-
-```ts
-import { ExtError, ExtClass } from "external-library"
-
-const extClassInstance = new ExtClass()
-
-const wrappedAndBoundFn = intoResult<ExtError>(
-  false,
-  extClassInstance,
-)(extClassInstance.unsafeFn)
-
-const result = wrappedAndBoundFn(123)
-
-if (result.isOk) {
-  handleResult(result.ok)
-} else {
-  handleError(result.err)
-}
 ```

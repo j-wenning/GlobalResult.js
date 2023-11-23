@@ -54,49 +54,4 @@ export function init() {
   }
 }
 
-/**
- * @param {any} arg0
- * @param {any} [arg1]
- * @returns {(cb: (...args: any[]) => any) => (...args: any[]) => any}
- */
-export function intoResult(arg0, arg1) {
-  const isAsync = typeof arg0 === "boolean" ? arg0 ?? false : arg1 ?? false
-  const thisArg = typeof arg0 !== "boolean" ? arg0 : undefined
-  return (fallible) => {
-    if (isAsync) {
-      if (thisArg === undefined) {
-        return (...args) =>
-          /** @type {Promise<any>} */ (fallible(...args))
-            .then(globalThis.Ok)
-            .catch(globalThis.Err)
-      } else {
-        return (...args) =>
-          /** @type {Promise<any>} */ (fallible.apply(thisArg, args))
-            .then(globalThis.Ok)
-            .catch(globalThis.Err)
-      }
-    } else {
-      if (thisArg === undefined) {
-        return (...args) => {
-          try {
-            const result = fallible(...args)
-            return globalThis.Ok(result)
-          } catch (e) {
-            return globalThis.Err(e)
-          }
-        }
-      } else {
-        return (...args) => {
-          try {
-            const result = fallible.apply(thisArg, args)
-            return globalThis.Ok(result)
-          } catch (e) {
-            return globalThis.Err(e)
-          }
-        }
-      }
-    }
-  }
-}
-
 export default init
