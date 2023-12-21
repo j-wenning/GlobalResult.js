@@ -1,6 +1,6 @@
 {
   "name": "@j-wenning/global-result",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A simple utility for injecting a Result type into the global namespace",
   "main": "index.js",
   "author": "Justin Wenning <wenning.justin@gmail.com>",
